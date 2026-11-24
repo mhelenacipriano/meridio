@@ -1,0 +1,77 @@
+name: Refresh jobs
+
+on:
+  schedule:
+    - cron: '17 9 * * *' # daily, 09:17 UTC
+  workflow_dispatch:
+    inputs:
+      include_onsite:
+        description: 'Also keep on-site / hybrid roles'
+        type: boolean
+        default: false
+
+# Only one refresh at a time; never cancel a run that is mid-commit.
+concurrency:
+  group: refresh-jobs
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: app/package-lock.json
+
+      - name: Remember previous job count
+        id: before
+        run: echo "count=$(node -p "require('./app/src/jobs.json').length")" >> "$GITHUB_OUTPUT"
+
+      - name: Scrape company boards
+        run: node scripts/fetch-jobs.mjs ${{ inputs.include_onsite && '--include-onsite' || '' }}
+
+      # A failed board silently removes its jobs from the output, so refuse to
+      # publish a run that looks broken instead of overwriting good data.
+      - name: Sanity-check the result
+        env:
+          BEFORE: ${{ steps.before.outputs.count }}
+        run: |
+          node --input-type=module -e '
+            import { readFileSync } from "node:fs";
+            const report = JSON.parse(readFileSync("scripts/last-run.json", "utf8"));
+            const before = Number(process.env.BEFORE) || 0;
+            const failed = report.companies.filter((c) => c.status === "failed");
+            for (const c of failed) console.log(`::warning title=Board failed::${c.company}: ${c.error}`);
+            let problems = [];
+            if (failed.length > 2) problems.push(`${failed.length} boards failed`);
+            if (before > 0 && report.total < before * 0.6) problems.push(`job count fell from ${before} to ${report.total}`);
+            if (report.total === 0) problems.push("no jobs found");
+            if (problems.length) { console.log(`::error title=Refusing to publish::${problems.join("; ")}`); process.exit(1); }
+            console.log(`OK: ${report.total} jobs (was ${before}), ${failed.length} failed boards`);
+          '
+
+      - name: Check the app still builds with the new data
+        working-directory: app
+        run: |
+          npm ci --no-audit --no-fund
+          npm run build
+
+      - name: Commit and push if anything changed
+        run: |
+          git add app/src/jobs.json scripts/last-run.json
+          if git diff --cached --quiet; then
+            echo "No changes."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "chore: refresh jobs ($(date -u +%Y-%m-%d))"
+          git push

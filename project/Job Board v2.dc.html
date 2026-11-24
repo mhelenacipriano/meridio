@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap">
+<style>
+:root{--font-body:"DM Sans",system-ui,sans-serif;--color-bg:#f5f6fa;--color-surface:#ffffff;--color-text:#1b1f2a;--color-divider:color-mix(in srgb,#1b1f2a 11%,transparent);--color-accent:#2f5bea;--color-accent-400:#7f9bff;--color-accent-600:#2448c9;--color-accent-700:#1a3699;--accent-ink:var(--color-accent-700);--muted:color-mix(in srgb,var(--color-text) 62%,transparent);--hover:color-mix(in srgb,var(--color-text) 5%,transparent);--sel:color-mix(in srgb,var(--color-accent) 6%,var(--color-surface));--chip:color-mix(in srgb,var(--color-text) 6%,transparent);--field:var(--color-bg);--on-accent:#fff;--shadow-card:0 1px 2px rgba(20,30,60,.05),0 4px 14px rgba(20,30,60,.05);--shadow-hover:0 2px 4px rgba(20,30,60,.06),0 10px 24px rgba(20,30,60,.09);--shadow-md:0 4px 14px rgba(20,30,60,.12);--shadow-lg:0 20px 48px rgba(20,30,60,.2);color-scheme:light}
+:root[data-theme="dark"]{color-scheme:dark;--color-bg:#111319;--color-surface:#1a1d25;--color-text:#e8eaf0;--color-divider:color-mix(in srgb,#e8eaf0 12%,transparent);--accent-ink:var(--color-accent-400);--sel:color-mix(in srgb,var(--color-accent) 14%,var(--color-surface));--shadow-card:0 0 0 1px rgba(255,255,255,.04),0 4px 14px rgba(0,0,0,.25);--shadow-hover:0 0 0 1px rgba(255,255,255,.08),0 10px 24px rgba(0,0,0,.35);--shadow-md:0 6px 18px rgba(0,0,0,.4);--shadow-lg:0 0 0 1px rgba(255,255,255,.06),0 20px 48px rgba(0,0,0,.55)}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--color-bg);font-family:var(--font-body);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-weight:700}
+a{color:var(--accent-ink)}
+a:hover{color:var(--color-accent-600)}
+:focus{outline:none}
+:focus-visible{outline:2px solid var(--color-accent);outline-offset:2px}
+input::placeholder{color:var(--muted)}
+select,input,button{font-family:inherit}
+</style>
+</helmet>
+<div style="min-height:100vh;background:{{ outerBg }};display:flex;justify-content:center;align-items:center;padding:{{ outerPad }};font-family:var(--font-body);color:var(--color-text)">
+<div style="position:relative;overflow:hidden;width:{{ frameW }};height:{{ frameH }};display:flex;flex-direction:column;background:var(--color-bg);border:{{ frameBorder }}">
+
+<header style="flex:none;background:var(--color-surface);display:flex;align-items:center;gap:16px;padding:{{ headPad }};border-bottom:1px solid var(--color-divider)">
+  <a href="#" onClick="{{ goJobs }}" style="display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--color-text);margin-right:auto;min-width:0">
+    <span style="width:22px;height:22px;border-radius:7px;background:var(--color-accent);flex:none"></span>
+    <span style="font-weight:700;font-size:20px;letter-spacing:-0.02em">meridio</span>
+    <sc-if value="{{ isDesktop }}" hint-placeholder-val="{{ true }}"><span style="font-size:13px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ t.tagline }}</span></sc-if>
+  </a>
+  <sc-if value="{{ isDesktop }}" hint-placeholder-val="{{ true }}">
+    <nav style="display:flex;gap:4px;align-self:center">
+      <sc-for list="{{ tabs }}" as="tab" hint-placeholder-count="2">
+        <button onClick="{{ tab.onClick }}" aria-current="{{ tab.current }}" style="display:flex;align-items:center;gap:8px;padding:8px 14px;background:{{ tab.pill }};border:0;color:{{ tab.color }};font-size:14px;font-weight:{{ tab.weight }};cursor:pointer;border-radius:999px" style-hover="background:var(--hover)">
+          <span>{{ tab.label }}</span>
+          <sc-if value="{{ tab.hasCount }}"><span style="font-size:11px;font-weight:600;padding:1px 6px;background:var(--color-accent);color:var(--on-accent);border-radius:999px">{{ tab.count }}</span></sc-if>
+        </button>
+      </sc-for>
+    </nav>
+  </sc-if>
+  <div role="group" aria-label="Language" style="display:flex;gap:2px;padding:2px;border:1px solid var(--color-divider);border-radius:10px;flex:none">
+    <sc-for list="{{ langs }}" as="l" hint-placeholder-count="3">
+      <button onClick="{{ l.onClick }}" aria-pressed="{{ l.pressed }}" style="padding:6px 9px;border:0;background:{{ l.bg }};color:{{ l.fg }};font-size:12px;font-weight:600;cursor:pointer;min-height:30px;border-radius:8px" style-hover="opacity:.85">{{ l.label }}</button>
+    </sc-for>
+  </div>
+  <button onClick="{{ toggleTheme }}" aria-label="{{ themeLabel }}" title="{{ themeLabel }}" style="width:36px;height:36px;flex:none;display:grid;place-items:center;background:none;border:1px solid var(--color-divider);color:var(--color-text);cursor:pointer;border-radius:10px" style-hover="background:var(--hover)">
+    <sc-if value="{{ isDark }}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg></sc-if>
+    <sc-if value="{{ isLight }}" hint-placeholder-val="{{ true }}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg></sc-if>
+  </button>
+</header>
+
+<sc-if value="{{ showToolbar }}" hint-placeholder-val="{{ true }}">
+<div style="flex:none;background:var(--color-surface);display:flex;flex-direction:column;gap:14px;padding:16px 20px;border-bottom:1px solid var(--color-divider)">
+  <div style="display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap">
+    <label style="flex:1 1 300px;position:relative;display:block">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="position:absolute;left:12px;top:12px;color:var(--muted);stroke-width:2;stroke-linecap:round"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+      <input type="search" value="{{ q }}" onChange="{{ onQ }}" placeholder="{{ t.search }}" aria-label="{{ t.search }}" style="width:100%;height:40px;padding:0 12px 0 36px;font-size:14px;color:var(--color-text);background:var(--field);border:1px solid var(--color-divider);border-radius:10px;box-sizing:border-box" style-focus="border-color:var(--color-accent)">
+    </label>
+    <label style="display:flex;flex-direction:column;gap:4px;font-size:12px;color:var(--muted)">
+      <span>{{ t.country }}</span>
+      <select value="{{ country }}" onChange="{{ onCountry }}" style="height:40px;min-width:190px;padding:0 10px;font-size:14px;color:var(--color-text);background:var(--field);border:1px solid var(--color-divider);border-radius:10px;cursor:pointer;border-radius:10px">
+        <sc-for list="{{ countryOpts }}" as="o" hint-placeholder-count="1"><option value="{{ o.value }}">{{ o.label }}</option></sc-for>
+      </select>
+    </label>
+    <label style="display:flex;flex-direction:column;gap:4px;font-size:12px;color:var(--muted)">
+      <span>{{ t.posted }}</span>
+      <select value="{{ posted }}" onChange="{{ onPosted }}" style="height:40px;min-width:150px;padding:0 10px;font-size:14px;color:var(--color-text);background:var(--field);border:1px solid var(--color-divider);border-radius:10px;cursor:pointer;border-radius:10px">
+        <sc-for list="{{ postedOpts }}" as="o" hint-placeholder-count="1"><option value="{{ o.value }}">{{ o.label }}</option></sc-for>
+      </select>
+    </label>
+    <button onClick="{{ openAlert }}" style="height:40px;flex:none;white-space:nowrap;display:flex;align-items:center;gap:8px;padding:0 14px;background:none;border:1px solid var(--color-divider);color:var(--color-text);font-size:14px;font-weight:700;cursor:pointer;border-radius:10px" style-hover="background:var(--hover)">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path></svg>
+      <span>{{ t.alerts }}</span>
+    </button>
+  </div>
+  <div style="display:flex;gap:12px 28px;flex-wrap:wrap;align-items:center">
+    <div role="group" aria-label="{{ t.role }}" style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
+      <span style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-right:4px">{{ t.role }}</span>
+      <sc-for list="{{ roleChips }}" as="c" hint-placeholder-count="7">
+        <button onClick="{{ c.onClick }}" aria-pressed="{{ c.pressed }}" style="padding:6px 12px;font-size:13px;border-radius:999px;border:1px solid {{ c.border }};background:{{ c.bg }};color:{{ c.fg }};cursor:pointer;border-radius:10px" style-hover="border-color:var(--color-text)">{{ c.label }}</button>
+      </sc-for>
+    </div>
+    <div role="group" aria-label="{{ t.seniority }}" style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
+      <span style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-right:4px">{{ t.seniority }}</span>
+      <sc-for list="{{ senChips }}" as="c" hint-placeholder-count="4">
+        <button onClick="{{ c.onClick }}" aria-pressed="{{ c.pressed }}" style="padding:6px 12px;font-size:13px;border-radius:999px;border:1px solid {{ c.border }};background:{{ c.bg }};color:{{ c.fg }};cursor:pointer;border-radius:10px" style-hover="border-color:var(--color-text)">{{ c.label }}</button>
+      </sc-for>
+    </div>
+    <sc-if value="{{ hasFilters }}">
+      <button onClick="{{ clearFilters }}" style="margin-left:auto;padding:5px 6px;background:none;border:0;color:var(--accent-ink);font-size:13px;font-weight:700;cursor:pointer;text-decoration:underline;text-underline-offset:3px">{{ t.clear }}</button>
+    </sc-if>
+  </div>
+</div>
+</sc-if>
+
+<main style="flex:1;min-height:0;display:grid;grid-template-columns:{{ cols }}">
+  <sc-if value="{{ showList }}" hint-placeholder-val="{{ true }}">
+  <section aria-label="{{ listTitle }}" style="min-height:0;overflow-y:auto;border-right:{{ listBorder }};display:flex;flex-direction:column">
+    <sc-if value="{{ showMobileSearch }}">
+      <div style="position:sticky;top:0;z-index:2;display:flex;gap:8px;padding:12px 16px;background:var(--color-bg);border-bottom:1px solid var(--color-divider)">
+        <label style="flex:1;position:relative;display:block;min-width:0">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="position:absolute;left:12px;top:14px;color:var(--muted);stroke-width:2;stroke-linecap:round"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+          <input type="search" value="{{ q }}" onChange="{{ onQ }}" placeholder="{{ t.searchShort }}" aria-label="{{ t.search }}" style="width:100%;height:44px;padding:0 10px 0 36px;font-size:16px;color:var(--color-text);background:var(--field);border:1px solid var(--color-divider);border-radius:10px;box-sizing:border-box">
+        </label>
+        <button onClick="{{ openSheet }}" style="height:44px;flex:none;display:flex;align-items:center;gap:8px;padding:0 12px;background:{{ filterBtnBg }};color:{{ filterBtnFg }};border:1px solid var(--color-divider);font-size:14px;font-weight:700;cursor:pointer;border-radius:10px">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width:2;stroke-linecap:round"><path d="M21 4h-7M10 4H3M21 12h-9M8 12H3M21 20h-5M12 20H3M14 2v4M8 10v4M16 18v4"></path></svg>
+          <span>{{ filterBtnLabel }}</span>
+        </button>
+      </div>
+    </sc-if>
+    <div style="display:flex;align-items:baseline;gap:12px;padding:18px 24px 12px">
+      <h2 style="margin:0;font-size:15px;font-weight:700;letter-spacing:0;white-space:nowrap;flex:none">{{ listTitle }}</h2>
+      <span style="font-size:12px;color:var(--muted);margin-left:auto;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ listSub }}</span>
+      <sc-if value="{{ showPanelToggle }}">
+        <button onClick="{{ togglePanel }}" aria-pressed="{{ panelPressed }}" title="{{ panelLabel }}" style="align-self:center;height:32px;flex:none;white-space:nowrap;display:flex;align-items:center;gap:6px;padding:0 10px;margin:-6px -8px -6px 0;background:{{ panelBtnBg }};border:1px solid var(--color-divider);color:var(--color-text);font-size:12px;font-weight:700;cursor:pointer;border-radius:999px" style-hover="background:var(--hover)">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><rect width="18" height="18" x="3" y="3" rx="2"></rect><path d="M15 3v18"></path></svg>
+          <span>{{ panelLabel }}</span>
+        </button>
+      </sc-if>
+    </div>
+    <div style="display:grid;grid-template-columns:{{ listGridCols }};gap:10px;padding:0 12px 12px">
+    <sc-for list="{{ jobs }}" as="job" hint-placeholder-count="6">
+      <article onClick="{{ job.onSelect }}" style="display:flex;gap:14px;padding:{{ cardPad }};margin:0;border:1px solid {{ job.cardBorder }};border-radius:14px;background:{{ job.bg }};box-shadow:var(--shadow-card);cursor:pointer;transition:box-shadow .15s,transform .15s" style-hover="box-shadow:var(--shadow-hover);transform:translateY(-1px)">
+        <div aria-hidden="true" style="width:40px;height:40px;flex:none;display:grid;place-items:center;background:color-mix(in srgb,var(--color-accent) 12%,var(--color-surface));color:var(--accent-ink);border-radius:12px;font-size:13px;font-weight:700">{{ job.initials }}</div>
+        <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:6px">
+          <div style="display:flex;align-items:flex-start;gap:8px">
+            <div style="flex:1;min-width:0">
+              <button onClick="{{ job.onSelect }}" aria-current="{{ job.current }}" style="display:block;padding:0;margin:0;background:none;border:0;text-align:left;font-size:16px;font-weight:700;line-height:1.25;color:{{ job.titleColor }};cursor:pointer;text-wrap:pretty">{{ job.title }}</button>
+              <div style="font-size:13px;color:var(--muted);margin-top:2px">{{ job.sub }}</div>
+            </div>
+            <button onClick="{{ job.onSave }}" aria-pressed="{{ job.savedStr }}" aria-label="{{ job.saveLabel }}" title="{{ job.saveLabel }}" style="width:36px;height:36px;margin:-6px -8px 0 0;flex:none;display:grid;place-items:center;background:none;border:0;color:{{ job.saveColor }};cursor:pointer;border-radius:10px" style-hover="background:var(--hover)">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="{{ job.saveFill }}" stroke="currentColor" style="stroke-width:2;stroke-linejoin:round"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"></path></svg>
+            </button>
+          </div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap">
+            <span style="font-size:11px;padding:2px 8px;border-radius:999px;background:color-mix(in srgb,var(--color-accent) 10%,transparent);color:var(--accent-ink);font-weight:600">{{ job.senLabel }}</span>
+            <sc-for list="{{ job.tags }}" as="tag" hint-placeholder-count="3"><span style="font-size:11px;padding:2px 8px;background:var(--chip);border-radius:999px">{{ tag }}</span></sc-for>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:12px;min-height:28px">
+            <sc-if value="{{ job.isNew }}"><span style="font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:2px 7px;border-radius:999px;background:var(--color-accent);color:var(--on-accent)">{{ t.newTag }}</span></sc-if>
+            <span style="color:var(--muted)">{{ job.postedLabel }}</span>
+            <sc-if value="{{ job.hasSalary }}"><span style="font-weight:600">{{ job.salary }}</span></sc-if>
+            <sc-if value="{{ quickApply }}" hint-placeholder-val="{{ true }}">
+              <a href="{{ job.url }}" target="_blank" rel="noopener noreferrer" onClick="{{ job.onApply }}" aria-label="{{ job.applyAria }}" style="margin-left:auto;display:flex;align-items:center;gap:5px;padding:5px 6px;font-size:13px;font-weight:700;color:var(--accent-ink);text-decoration:none;border-radius:8px" style-hover="background:color-mix(in srgb,var(--color-accent) 10%,transparent)">
+                <span>{{ t.apply }}</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round"><path d="M15 3h6v6M10 14 21 3M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg>
+              </a>
+            </sc-if>
+          </div>
+        </div>
+      </article>
+    </sc-for>
+    </div>
+    <sc-if value="{{ isEmpty }}">
+      <div style="padding:40px 20px;display:flex;flex-direction:column;align-items:flex-start;gap:8px">
+        <h3 style="margin:0;font-size:18px">{{ emptyTitle }}</h3>
+        <p style="margin:0;font-size:14px;color:var(--muted);max-width:340px;text-wrap:pretty">{{ emptyHint }}</p>
+        <button onClick="{{ emptyAction }}" style="margin-top:8px;padding:10px 14px;background:var(--color-accent);color:var(--on-accent);border:0;font-size:14px;font-weight:700;cursor:pointer;text-align:left;border-radius:10px" style-hover="background:var(--color-accent-600)">{{ emptyActionLabel }}</button>
+      </div>
+    </sc-if>
+    <sc-if value="{{ showKeyHint }}"><p style="margin:0;padding:14px 20px;font-size:12px;color:var(--muted)">{{ t.keyHint }}</p></sc-if>
+  </section>
+  </sc-if>
+
+  <sc-if value="{{ showDetail }}" hint-placeholder-val="{{ true }}">
+  <section aria-label="{{ d.title }}" style="min-height:0;overflow-y:auto;display:flex;flex-direction:column;background:var(--color-surface)">
+    <sc-if value="{{ hasDetail }}" hint-placeholder-val="{{ true }}">
+      <sc-if value="{{ isMobile }}">
+        <div style="position:sticky;top:0;z-index:2;display:flex;align-items:center;padding:6px 8px;background:var(--color-surface);border-bottom:1px solid var(--color-divider)">
+          <button onClick="{{ closeDetail }}" style="height:44px;display:flex;align-items:center;gap:8px;padding:0 10px;background:none;border:0;color:var(--color-text);font-size:15px;font-weight:700;cursor:pointer;border-radius:10px">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="m12 19-7-7 7-7M19 12H5"></path></svg>
+            <span>{{ t.back }}</span>
+          </button>
+        </div>
+      </sc-if>
+      <sc-if value="{{ isDesktop }}" hint-placeholder-val="{{ true }}">
+        <div style="position:sticky;top:0;z-index:2;height:0;display:flex;justify-content:flex-end">
+          <button onClick="{{ hidePanel }}" aria-label="{{ t.hideDetails }}" title="{{ t.hideDetails }} (Esc)" style="width:36px;height:36px;margin:16px 16px 0 0;flex:none;display:grid;place-items:center;background:var(--color-surface);border:1px solid var(--color-divider);color:var(--color-text);cursor:pointer;border-radius:10px" style-hover="background:var(--hover)">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width:2;stroke-linecap:round"><path d="M18 6 6 18M6 6l12 12"></path></svg>
+          </button>
+        </div>
+      </sc-if>
+      <div style="padding:{{ detailPad }};display:flex;flex-direction:column;gap:24px;max-width:780px;width:100%;box-sizing:border-box">
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <div style="display:flex;align-items:center;gap:12px">
+            <div aria-hidden="true" style="width:52px;height:52px;flex:none;display:grid;place-items:center;background:color-mix(in srgb,var(--color-accent) 12%,var(--color-surface));color:var(--accent-ink);border-radius:14px;font-size:17px;font-weight:700">{{ d.initials }}</div>
+            <div style="display:flex;flex-direction:column">
+              <span style="font-size:15px;font-weight:600">{{ d.company }}</span>
+              <span style="font-size:13px;color:var(--muted)">{{ d.postedLabel }}</span>
+            </div>
+          </div>
+          <h1 style="margin:0;font-size:{{ h1Size }};line-height:1.1;letter-spacing:-0.02em;text-wrap:pretty">{{ d.title }}</h1>
+          <sc-if value="{{ isDesktop }}" hint-placeholder-val="{{ true }}">
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+              <a href="{{ d.url }}" target="_blank" rel="noopener noreferrer" style="display:flex;align-items:center;gap:10px;padding:12px 16px;min-width:220px;background:var(--color-accent);color:var(--on-accent);text-decoration:none;font-size:15px;font-weight:700;border-radius:12px;box-shadow:0 4px 14px color-mix(in srgb,var(--color-accent) 30%,transparent)" style-hover="background:var(--color-accent-600);color:var(--on-accent)">
+                <span style="margin-right:auto">{{ d.applyLabel }}</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round"><path d="M15 3h6v6M10 14 21 3M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg>
+              </a>
+              <button onClick="{{ d.onSave }}" aria-pressed="{{ d.savedStr }}" style="display:flex;align-items:center;gap:8px;padding:12px 14px;background:none;border:1px solid var(--color-divider);color:var(--color-text);font-size:15px;font-weight:700;cursor:pointer;border-radius:10px" style-hover="background:var(--hover)">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="{{ d.saveFill }}" stroke="currentColor" style="stroke-width:2;stroke-linejoin:round"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"></path></svg>
+                <span>{{ d.saveText }}</span>
+              </button>
+              <button onClick="{{ copyLink }}" aria-label="{{ t.copy }}" title="{{ t.copy }}" style="width:46px;height:46px;display:grid;place-items:center;background:none;border:1px solid var(--color-divider);color:var(--color-text);cursor:pointer;border-radius:10px" style-hover="background:var(--hover)">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><rect width="14" height="14" x="8" y="8" rx="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg>
+              </button>
+              <span style="font-size:12px;color:var(--muted)">{{ d.opensOn }}</span>
+            </div>
+          </sc-if>
+        </div>
+        <dl style="margin:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:0 20px;padding:4px 20px;background:var(--color-bg);border-radius:14px">
+          <sc-for list="{{ d.meta }}" as="m" hint-placeholder-count="4">
+            <div style="padding:12px 0;display:flex;flex-direction:column;gap:2px">
+              <dt style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)">{{ m.label }}</dt>
+              <dd style="margin:0;font-size:15px;font-weight:600">{{ m.value }}</dd>
+            </div>
+          </sc-for>
+        </dl>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <h2 style="margin:0;font-size:18px;letter-spacing:0">{{ t.about }}</h2>
+          <p style="margin:0;font-size:15px;line-height:1.6;text-wrap:pretty">{{ d.about }}</p>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <h2 style="margin:0;font-size:18px;letter-spacing:0">{{ t.reqs }}</h2>
+          <ul style="margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;font-size:15px;line-height:1.5">
+            <sc-for list="{{ d.reqs }}" as="r" hint-placeholder-count="3"><li>{{ r }}</li></sc-for>
+          </ul>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <h2 style="margin:0;font-size:18px;letter-spacing:0">{{ t.stack }}</h2>
+          <div style="display:flex;gap:6px;flex-wrap:wrap">
+            <sc-for list="{{ d.stack }}" as="s" hint-placeholder-count="3"><span style="font-size:13px;padding:4px 10px;background:var(--chip);border-radius:999px">{{ s }}</span></sc-for>
+          </div>
+        </div>
+        <p style="margin:0;padding-top:12px;border-top:1px solid var(--color-divider);font-size:12px;color:var(--muted)">{{ t.inEnglish }}</p>
+      </div>
+      <sc-if value="{{ isMobile }}">
+        <div style="position:sticky;bottom:0;margin-top:auto;display:flex;gap:8px;padding:12px 16px;background:var(--color-surface);border-top:1px solid var(--color-divider)">
+          <button onClick="{{ d.onSave }}" aria-pressed="{{ d.savedStr }}" aria-label="{{ d.saveText }}" style="width:48px;height:48px;flex:none;display:grid;place-items:center;background:none;border:1px solid var(--color-divider);color:{{ d.saveColor }};cursor:pointer;border-radius:10px">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="{{ d.saveFill }}" stroke="currentColor" style="stroke-width:2;stroke-linejoin:round"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"></path></svg>
+          </button>
+          <a href="{{ d.url }}" target="_blank" rel="noopener noreferrer" style="flex:1;height:48px;display:flex;align-items:center;gap:10px;padding:0 16px;background:var(--color-accent);color:var(--on-accent);text-decoration:none;font-size:15px;font-weight:700;border-radius:12px;box-shadow:0 4px 14px color-mix(in srgb,var(--color-accent) 30%,transparent)">
+            <span style="margin-right:auto">{{ d.applyLabel }}</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round"><path d="M15 3h6v6M10 14 21 3M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg>
+          </a>
+        </div>
+      </sc-if>
+    </sc-if>
+    <sc-if value="{{ noDetail }}">
+      <div style="padding:40px 32px;font-size:14px;color:var(--muted)">{{ t.selectJob }}</div>
+    </sc-if>
+  </section>
+  </sc-if>
+</main>
+
+<sc-if value="{{ showTabbar }}">
+  <nav style="flex:none;display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--color-divider);background:var(--color-surface)">
+    <sc-for list="{{ tabs }}" as="tab" hint-placeholder-count="2">
+      <button onClick="{{ tab.onClick }}" aria-current="{{ tab.current }}" style="height:56px;display:flex;align-items:center;gap:8px;padding:0 20px;background:none;border:0;color:{{ tab.color }};font-size:14px;font-weight:{{ tab.weight }};cursor:pointer;border-radius:10px">
+        <span>{{ tab.label }}</span>
+        <sc-if value="{{ tab.hasCount }}"><span style="font-size:11px;font-weight:600;padding:1px 6px;background:var(--color-accent);color:var(--on-accent);border-radius:999px">{{ tab.count }}</span></sc-if>
+      </button>
+    </sc-for>
+  </nav>
+</sc-if>
+
+<sc-if value="{{ sheetOpen }}">
+  <div onClick="{{ closeSheet }}" style="position:absolute;inset:0;z-index:20;background:color-mix(in srgb,#000 50%,transparent);display:flex;flex-direction:column;justify-content:flex-end">
+    <div role="dialog" aria-modal="true" aria-label="{{ t.filters }}" onClick="{{ stop }}" style="max-height:88%;display:flex;flex-direction:column;background:var(--color-bg);border-radius:20px 20px 0 0">
+      <div style="display:flex;align-items:center;padding:8px 8px 8px 20px;border-bottom:1px solid var(--color-divider)">
+        <h2 style="margin:0 auto 0 0;font-size:18px">{{ t.filters }}</h2>
+        <button onClick="{{ closeSheet }}" aria-label="{{ t.close }}" style="width:44px;height:44px;display:grid;place-items:center;background:none;border:0;color:var(--color-text);cursor:pointer;border-radius:10px">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width:2;stroke-linecap:round"><path d="M18 6 6 18M6 6l12 12"></path></svg>
+        </button>
+      </div>
+      <div style="overflow-y:auto;padding:16px 20px;display:flex;flex-direction:column;gap:22px">
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <span style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)">{{ t.role }}</span>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <sc-for list="{{ roleChips }}" as="c"><button onClick="{{ c.onClick }}" aria-pressed="{{ c.pressed }}" style="min-height:44px;padding:0 16px;font-size:14px;border-radius:999px;border:1px solid {{ c.border }};background:{{ c.bg }};color:{{ c.fg }};cursor:pointer;border-radius:10px">{{ c.label }}</button></sc-for>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <span style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)">{{ t.seniority }}</span>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <sc-for list="{{ senChips }}" as="c"><button onClick="{{ c.onClick }}" aria-pressed="{{ c.pressed }}" style="min-height:44px;padding:0 16px;font-size:14px;border-radius:999px;border:1px solid {{ c.border }};background:{{ c.bg }};color:{{ c.fg }};cursor:pointer;border-radius:10px">{{ c.label }}</button></sc-for>
+          </div>
+        </div>
+        <label style="display:flex;flex-direction:column;gap:8px">
+          <span style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)">{{ t.country }}</span>
+          <select value="{{ country }}" onChange="{{ onCountry }}" style="height:48px;padding:0 10px;font-size:16px;color:var(--color-text);background:var(--field);border:1px solid var(--color-divider);border-radius:10px">
+            <sc-for list="{{ countryOpts }}" as="o"><option value="{{ o.value }}">{{ o.label }}</option></sc-for>
+          </select>
+        </label>
+        <label style="display:flex;flex-direction:column;gap:8px">
+          <span style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)">{{ t.posted }}</span>
+          <select value="{{ posted }}" onChange="{{ onPosted }}" style="height:48px;padding:0 10px;font-size:16px;color:var(--color-text);background:var(--field);border:1px solid var(--color-divider);border-radius:10px">
+            <sc-for list="{{ postedOpts }}" as="o"><option value="{{ o.value }}">{{ o.label }}</option></sc-for>
+          </select>
+        </label>
+        <button onClick="{{ openAlert }}" style="min-height:44px;display:flex;align-items:center;gap:8px;padding:0;background:none;border:0;color:var(--accent-ink);font-size:14px;font-weight:700;cursor:pointer;border-radius:10px">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path></svg>
+          <span>{{ t.alertsSearch }}</span>
+        </button>
+      </div>
+      <div style="display:flex;gap:8px;padding:12px 16px;border-top:1px solid var(--color-divider)">
+        <button onClick="{{ clearFilters }}" style="height:48px;padding:0 16px;background:none;border:1px solid var(--color-divider);color:var(--color-text);font-size:15px;font-weight:700;cursor:pointer;border-radius:10px">{{ t.clear }}</button>
+        <button onClick="{{ closeSheet }}" style="flex:1;height:48px;padding:0 16px;text-align:left;background:var(--color-accent);color:var(--on-accent);border:0;font-size:15px;font-weight:700;cursor:pointer;border-radius:10px">{{ showNLabel }}</button>
+      </div>
+    </div>
+  </div>
+</sc-if>
+
+<sc-if value="{{ alertOpen }}">
+  <div onClick="{{ closeAlert }}" style="position:absolute;inset:0;z-index:30;display:grid;place-items:center;padding:16px;background:color-mix(in srgb,#000 50%,transparent)">
+    <div role="dialog" aria-modal="true" aria-label="{{ t.alertTitle }}" onClick="{{ stop }}" style="width:min(440px,100%);display:flex;flex-direction:column;gap:14px;padding:24px;background:var(--color-bg);box-shadow:var(--shadow-lg);border-radius:18px">
+      <h2 style="margin:0;font-size:22px">{{ t.alertTitle }}</h2>
+      <sc-if value="{{ alertPending }}">
+        <p style="margin:0;font-size:14px;line-height:1.55;text-wrap:pretty">{{ t.alertBody }}</p>
+        <p style="margin:0;font-size:13px;color:var(--muted)">{{ alertSummary }}</p>
+        <label style="display:flex;flex-direction:column;gap:6px;font-size:12px;color:var(--muted)">
+          <span>{{ t.email }}</span>
+          <input type="email" value="{{ email }}" onChange="{{ onEmail }}" placeholder="tu@correo.com" style="height:44px;padding:0 12px;font-size:16px;color:var(--color-text);background:var(--field);border:1px solid var(--color-divider);border-radius:10px">
+        </label>
+        <div style="display:flex;gap:8px;justify-content:flex-end">
+          <button onClick="{{ closeAlert }}" style="height:44px;padding:0 14px;background:none;border:1px solid var(--color-divider);color:var(--color-text);font-size:14px;font-weight:700;cursor:pointer;border-radius:10px">{{ t.cancel }}</button>
+          <button onClick="{{ submitAlert }}" disabled="{{ emailInvalid }}" style="height:44px;padding:0 16px;min-width:150px;text-align:left;background:var(--color-accent);color:var(--on-accent);border:0;font-size:14px;font-weight:700;cursor:pointer;opacity:{{ submitOpacity }};border-radius:10px">{{ t.create }}</button>
+        </div>
+      </sc-if>
+      <sc-if value="{{ alertSent }}">
+        <p style="margin:0;font-size:14px;line-height:1.55">{{ t.alertDone }}</p>
+        <div style="display:flex;justify-content:flex-end"><button onClick="{{ closeAlert }}" style="height:44px;padding:0 16px;min-width:120px;text-align:left;background:var(--color-text);color:var(--color-bg);border:0;font-size:14px;font-weight:700;cursor:pointer;border-radius:10px">{{ t.done }}</button></div>
+      </sc-if>
+    </div>
+  </div>
+</sc-if>
+
+<sc-if value="{{ hasToast }}">
+  <div role="status" style="position:absolute;z-index:40;left:20px;bottom:{{ toastBottom }};padding:10px 14px;background:var(--color-text);color:var(--color-bg);font-size:14px;font-weight:600;box-shadow:var(--shadow-md);border-radius:12px">{{ toast }}</div>
+</sc-if>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;options&quot;:[&quot;#2f5bea&quot;,&quot;#0f8a5f&quot;,&quot;#6b4ce6&quot;,&quot;#0e7c86&quot;],&quot;default&quot;:&quot;#2f5bea&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Theme&quot;},&quot;density&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;comfortable&quot;,&quot;compact&quot;],&quot;default&quot;:&quot;comfortable&quot;,&quot;tsType&quot;:&quot;'comfortable'|'compact'&quot;,&quot;section&quot;:&quot;List&quot;},&quot;quickApply&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;List&quot;},&quot;previewMobile&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Preview&quot;}}">
+class Component extends DCLogic {
+  static T = {
+    en: { tagline: 'Remote developer jobs for Latin America', jobs: 'Jobs', saved: 'Saved', search: 'Search by title, company or stack', searchShort: 'Title, company, stack', role: 'Role', seniority: 'Seniority', country: 'Eligible from', posted: 'Posted', anyCountry: 'Anywhere in LATAM', anyTime: 'Any time', d1: 'Last 24 hours', d7: 'Last 7 days', d30: 'Last 30 days', count: n => n === 1 ? '1 remote job' : n + ' remote jobs', newest: 'Newest first', clear: 'Clear all', filters: 'Filters', apply: 'Apply', applyOn: d => 'Apply on ' + d, save: 'Save', savedBtn: 'Saved', saveJob: 'Save job', unsaveJob: 'Remove from saved', alerts: 'Get alerts', alertsSearch: 'Get alerts for this search', alertTitle: 'Get new jobs by email', alertBody: 'We\u2019ll email you when new jobs match your current filters. No account or password needed.', allJobs: 'All remote jobs', email: 'Email', cancel: 'Cancel', create: 'Create alert', alertDone: 'Alert created. Check your inbox to confirm your email.', done: 'Done', noResults: 'No jobs match these filters', noResultsHint: 'Try removing a filter or choosing \u201cAnywhere in LATAM\u201d.', savedEmpty: 'No saved jobs yet', savedEmptyHint: 'Tap the bookmark on any job to keep it here. Saved on this device.', browse: 'Browse jobs', back: 'Back', about: 'About the role', reqs: 'What you\u2019ll need', stack: 'Stack', contract: 'Contract', eligible: 'Eligible from', salary: 'Salary', salaryNA: 'Not listed', ago: x => x + ' ago', now: 'Just now', inEnglish: 'This posting is in English, as published by the company.', copy: 'Copy link', copied: 'Link copied', savedToast: 'Saved', removedToast: 'Removed from saved', showN: n => 'Show ' + n + ' jobs', newTag: 'New', savedTitle: n => 'Saved jobs (' + n + ')', savedSub: 'On this device', contractor: 'Contractor', fulltime: 'Full-time', latam: 'All LATAM', selectJob: 'Select a job to see the details.', keyHint: 'Tip: use \u2191 \u2193 to move through jobs.', opensOn: 'Opens in a new tab', close: 'Close', hideDetails: 'Hide details', showDetails: 'Show details', dark: 'Switch to dark mode', light: 'Switch to light mode', sen: { junior: 'Junior', mid: 'Mid-level', senior: 'Senior', lead: 'Lead / Staff' } },
+    es: { tagline: 'Empleos remotos para developers de Latinoamérica', jobs: 'Empleos', saved: 'Guardados', search: 'Buscar por puesto, empresa o stack', searchShort: 'Puesto, empresa, stack', role: 'Rol', seniority: 'Seniority', country: 'Disponible desde', posted: 'Publicado', anyCountry: 'Cualquier país de LATAM', anyTime: 'Cualquier fecha', d1: 'Últimas 24 horas', d7: 'Últimos 7 días', d30: 'Últimos 30 días', count: n => n === 1 ? '1 empleo remoto' : n + ' empleos remotos', newest: 'Más recientes primero', clear: 'Limpiar todo', filters: 'Filtros', apply: 'Postular', applyOn: d => 'Postular en ' + d, save: 'Guardar', savedBtn: 'Guardado', saveJob: 'Guardar empleo', unsaveJob: 'Quitar de guardados', alerts: 'Recibir alertas', alertsSearch: 'Recibir alertas de esta búsqueda', alertTitle: 'Recibe nuevos empleos por email', alertBody: 'Te escribiremos cuando aparezcan empleos que coincidan con tus filtros actuales. Sin cuenta ni contraseña.', allJobs: 'Todos los empleos remotos', email: 'Email', cancel: 'Cancelar', create: 'Crear alerta', alertDone: 'Alerta creada. Revisa tu bandeja para confirmar tu email.', done: 'Listo', noResults: 'Ningún empleo coincide con estos filtros', noResultsHint: 'Prueba quitar un filtro o elegir \u201cCualquier país de LATAM\u201d.', savedEmpty: 'Aún no tienes empleos guardados', savedEmptyHint: 'Toca el marcador de cualquier empleo para guardarlo aquí. Se guarda en este dispositivo.', browse: 'Ver empleos', back: 'Volver', about: 'Sobre el puesto', reqs: 'Qué necesitas', stack: 'Stack', contract: 'Contrato', eligible: 'Disponible desde', salary: 'Salario', salaryNA: 'No publicado', ago: x => 'hace ' + x, now: 'Ahora', inEnglish: 'Esta oferta está en inglés, tal como la publicó la empresa.', copy: 'Copiar enlace', copied: 'Enlace copiado', savedToast: 'Guardado', removedToast: 'Quitado de guardados', showN: n => 'Ver ' + n + ' empleos', newTag: 'Nuevo', savedTitle: n => 'Empleos guardados (' + n + ')', savedSub: 'En este dispositivo', contractor: 'Contractor', fulltime: 'Tiempo completo', latam: 'Todo LATAM', selectJob: 'Elige un empleo para ver los detalles.', keyHint: 'Tip: usa \u2191 \u2193 para recorrer los empleos.', opensOn: 'Se abre en otra pestaña', close: 'Cerrar', hideDetails: 'Ocultar detalles', showDetails: 'Ver detalles', dark: 'Cambiar a modo oscuro', light: 'Cambiar a modo claro', sen: { junior: 'Junior', mid: 'Semi Senior', senior: 'Senior', lead: 'Lead / Staff' } },
+    pt: { tagline: 'Vagas remotas para devs da América Latina', jobs: 'Vagas', saved: 'Salvas', search: 'Buscar por cargo, empresa ou stack', searchShort: 'Cargo, empresa, stack', role: 'Área', seniority: 'Senioridade', country: 'Disponível para', posted: 'Publicada', anyCountry: 'Qualquer país da LATAM', anyTime: 'Qualquer data', d1: 'Últimas 24 horas', d7: 'Últimos 7 dias', d30: 'Últimos 30 dias', count: n => n === 1 ? '1 vaga remota' : n + ' vagas remotas', newest: 'Mais recentes primeiro', clear: 'Limpar tudo', filters: 'Filtros', apply: 'Candidatar', applyOn: d => 'Candidatar-se em ' + d, save: 'Salvar', savedBtn: 'Salva', saveJob: 'Salvar vaga', unsaveJob: 'Remover das salvas', alerts: 'Receber alertas', alertsSearch: 'Receber alertas desta busca', alertTitle: 'Receba novas vagas por email', alertBody: 'Avisaremos quando surgirem vagas que combinem com seus filtros atuais. Sem conta nem senha.', allJobs: 'Todas as vagas remotas', email: 'Email', cancel: 'Cancelar', create: 'Criar alerta', alertDone: 'Alerta criado. Confira sua caixa de entrada para confirmar o email.', done: 'Pronto', noResults: 'Nenhuma vaga com esses filtros', noResultsHint: 'Tente remover um filtro ou escolher \u201cQualquer país da LATAM\u201d.', savedEmpty: 'Nenhuma vaga salva ainda', savedEmptyHint: 'Toque no marcador de qualquer vaga para guardá-la aqui. Fica salva neste dispositivo.', browse: 'Ver vagas', back: 'Voltar', about: 'Sobre a vaga', reqs: 'O que você precisa', stack: 'Stack', contract: 'Contrato', eligible: 'Disponível para', salary: 'Salário', salaryNA: 'Não informado', ago: x => 'há ' + x, now: 'Agora', inEnglish: 'Esta vaga está em inglês, como publicada pela empresa.', copy: 'Copiar link', copied: 'Link copiado', savedToast: 'Vaga salva', removedToast: 'Removida das salvas', showN: n => 'Ver ' + n + ' vagas', newTag: 'Nova', savedTitle: n => 'Vagas salvas (' + n + ')', savedSub: 'Neste dispositivo', contractor: 'PJ / Contractor', fulltime: 'Tempo integral', latam: 'Toda a LATAM', selectJob: 'Escolha uma vaga para ver os detalhes.', keyHint: 'Dica: use \u2191 \u2193 para navegar pelas vagas.', opensOn: 'Abre em nova aba', close: 'Fechar', hideDetails: 'Ocultar detalhes', showDetails: 'Ver detalhes', dark: 'Mudar para modo escuro', light: 'Mudar para modo claro', sen: { junior: 'Júnior', mid: 'Pleno', senior: 'Sênior', lead: 'Lead / Staff' } }
+  };
+  static ROLES = [['frontend', 'Frontend'], ['backend', 'Backend'], ['fullstack', 'Full-stack'], ['mobile', 'Mobile'], ['devops', 'DevOps / SRE'], ['data', 'Data'], ['qa', 'QA']];
+  static SEN = ['junior', 'mid', 'senior', 'lead'];
+  static COUNTRIES = [['AR', 'Argentina'], ['BR', 'Brasil'], ['CL', 'Chile'], ['CO', 'Colombia'], ['CR', 'Costa Rica'], ['MX', 'México'], ['PE', 'Perú'], ['UY', 'Uruguay']];
+  static JOBS = [
+    { id: 1, title: 'Senior Frontend Engineer', company: 'Nubeflow', ini: 'NF', role: 'frontend', sen: 'senior', c: ['LATAM'], h: 3, pay: 'USD 5,000–6,500 / mo', ct: 'contractor', stack: ['React', 'TypeScript', 'Next.js', 'Tailwind'], url: 'https://careers.nubeflow.io/jobs/senior-frontend', about: 'Nubeflow builds workflow automation for logistics teams. You\u2019ll own the customer-facing dashboard, shipping features end-to-end with a small product squad spread across UTC-3 to UTC-6.', reqs: ['5+ years building production React apps', 'Strong TypeScript and testing habits', 'Comfortable writing and speaking English in async, written-first teams', '4 hours of overlap with UTC-3'] },
+    { id: 2, title: 'Backend Engineer (Go)', company: 'Pagora', ini: 'PG', role: 'backend', sen: 'mid', c: ['BR', 'MX', 'CO'], h: 9, pay: 'USD 3,800–4,800 / mo', ct: 'contractor', stack: ['Go', 'PostgreSQL', 'Kafka', 'AWS'], url: 'https://jobs.pagora.com/backend-go', about: 'Pagora processes cross-border payouts for marketplaces. Join the ledger team to design reliable, idempotent services that move money across 9 countries.', reqs: ['3+ years with Go or another typed backend language', 'Experience with relational databases and event streaming', 'Interest in payments and correctness'] },
+    { id: 3, title: 'Full-stack Developer', company: 'Tandem Health', ini: 'TH', role: 'fullstack', sen: 'mid', c: ['LATAM'], h: 20, pay: null, ct: 'fulltime', stack: ['Node.js', 'React', 'AWS'], url: 'https://tandemhealth.co/careers/fullstack', about: 'Tandem Health connects patients with care teams. You\u2019ll work across our Node.js API and React web app, partnering closely with design.', reqs: ['3+ years full-stack JavaScript', 'Experience shipping to AWS', 'Care for accessibility and UX details'] },
+    { id: 4, title: 'React Native Developer', company: 'Lumo Fitness', ini: 'LF', role: 'mobile', sen: 'senior', c: ['AR', 'UY', 'CL'], h: 30, pay: 'USD 4,500–6,000 / mo', ct: 'contractor', stack: ['React Native', 'TypeScript', 'GraphQL'], url: 'https://lumo.fit/jobs/react-native', about: 'Lumo\u2019s app helps 2M people train at home. Lead features in our React Native app and help shape our mobile architecture.', reqs: ['4+ years mobile development, 2+ in React Native', 'Published apps on iOS and Android', 'Experience with GraphQL clients'] },
+    { id: 5, title: 'Staff Platform Engineer', company: 'Kitestack', ini: 'KS', role: 'devops', sen: 'lead', c: ['LATAM'], h: 50, pay: 'USD 8,000–10,000 / mo', ct: 'fulltime', stack: ['Kubernetes', 'Terraform', 'GCP', 'Go'], url: 'https://kitestack.dev/careers/staff-platform', about: 'Define how 60 engineers build, deploy and observe services. You\u2019ll set platform direction and mentor a team of four.', reqs: ['8+ years in infrastructure or platform roles', 'Deep Kubernetes and Terraform experience', 'Track record leading cross-team technical initiatives'] },
+    { id: 6, title: 'Junior Frontend Developer', company: 'Okra Labs', ini: 'OL', role: 'frontend', sen: 'junior', c: ['BR'], h: 70, pay: 'USD 1,800–2,400 / mo', ct: 'contractor', stack: ['Vue', 'JavaScript', 'CSS'], url: 'https://okralabs.com.br/vagas/frontend-jr', about: 'A first remote role with structured mentorship. You\u2019ll build marketing sites and internal tools alongside two senior engineers.', reqs: ['Solid HTML, CSS and JavaScript fundamentals', 'A portfolio or GitHub with real projects', 'Intermediate English'] },
+    { id: 7, title: 'Data Engineer', company: 'Quanto', ini: 'QN', role: 'data', sen: 'senior', c: ['MX', 'CO', 'PE'], h: 96, pay: 'USD 5,500–7,000 / mo', ct: 'contractor', stack: ['Python', 'dbt', 'Snowflake', 'Airflow'], url: 'https://quanto.ai/careers/data-engineer', about: 'Build the pipelines behind Quanto\u2019s pricing models. You\u2019ll own ingestion, modeling and data quality for our analytics platform.', reqs: ['5+ years in data engineering', 'Strong SQL and Python', 'Experience with dbt and a cloud warehouse'] },
+    { id: 8, title: 'QA Automation Engineer', company: 'Relay Freight', ini: 'RF', role: 'qa', sen: 'mid', c: ['LATAM'], h: 120, pay: null, ct: 'contractor', stack: ['Playwright', 'TypeScript', 'GitHub Actions'], url: 'https://relayfreight.com/jobs/qa-automation', about: 'Own end-to-end test coverage for our shipper and carrier apps, and make CI fast and trustworthy.', reqs: ['3+ years in test automation', 'Experience with Playwright or Cypress', 'Comfortable in TypeScript codebases'] },
+    { id: 9, title: 'Senior Python Developer', company: 'Sabia AI', ini: 'SA', role: 'backend', sen: 'senior', c: ['LATAM'], h: 150, pay: 'USD 6,000–7,500 / mo', ct: 'fulltime', stack: ['Python', 'FastAPI', 'PostgreSQL'], url: 'https://sabia.ai/careers/senior-python', about: 'Sabia builds document understanding for Latin American banks. Design APIs that serve ML models to millions of requests a day.', reqs: ['5+ years with Python in production', 'API design experience with FastAPI or Django', 'Spanish or Portuguese is a plus'] },
+    { id: 10, title: 'iOS Engineer', company: 'Porto Bank', ini: 'PB', role: 'mobile', sen: 'mid', c: ['BR', 'AR'], h: 200, pay: 'USD 4,000–5,000 / mo', ct: 'fulltime', stack: ['Swift', 'SwiftUI', 'Combine'], url: 'https://portobank.com/careers/ios', about: 'Build the iOS app for a digital bank with 4M customers. Work on onboarding, cards and investments.', reqs: ['3+ years native iOS', 'Production SwiftUI experience', 'Attention to performance and accessibility'] },
+    { id: 11, title: 'Tech Lead, Full-stack', company: 'Cardinal Commerce', ini: 'CC', role: 'fullstack', sen: 'lead', c: ['MX', 'CO', 'CR'], h: 400, pay: 'USD 7,500–9,000 / mo', ct: 'contractor', stack: ['Ruby on Rails', 'React', 'AWS'], url: 'https://cardinalcommerce.io/jobs/tech-lead', about: 'Lead a squad of five shipping checkout features for mid-market retailers, balancing hands-on code with technical direction.', reqs: ['7+ years of web development', 'Prior experience leading a team', 'Rails and React in production'] },
+    { id: 12, title: 'Site Reliability Engineer', company: 'Vela Analytics', ini: 'VA', role: 'devops', sen: 'senior', c: ['LATAM'], h: 600, pay: null, ct: 'contractor', stack: ['AWS', 'Datadog', 'Terraform'], url: 'https://vela-analytics.com/careers/sre', about: 'Keep our analytics platform fast and available. Improve observability, incident response and cost efficiency.', reqs: ['4+ years in SRE or DevOps', 'Strong AWS and IaC skills', 'Calm, written-first incident communication'] }
+  ];
+
+  state = { lang: 'es', theme: 'light', view: 'jobs', q: '', roles: [], sens: [], country: 'all', posted: 'any', selectedId: null, detailOpen: false, panelHidden: false, saved: [], sheetOpen: false, alertOpen: false, alertSent: false, email: '', toast: '', w: typeof window !== 'undefined' ? window.innerWidth : 1280 };
+
+  componentDidMount() {
+    try {
+      const ls = window.localStorage;
+      const theme = ls.getItem('meridio.theme') || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      const lang = ls.getItem('meridio.lang') || ((navigator.language || '').startsWith('pt') ? 'pt' : (navigator.language || '').startsWith('en') ? 'en' : 'es');
+      const saved = JSON.parse(ls.getItem('meridio.saved') || '[2,9]');
+      this.setState({ theme, lang, saved, panelHidden: ls.getItem('meridio.panel') === 'hidden' });
+    } catch (e) {}
+    this._onResize = () => this.setState({ w: window.innerWidth });
+    this._onKey = (e) => {
+      if (this.isMobile() || this.state.alertOpen) return;
+      const tag = (document.activeElement && document.activeElement.tagName) || '';
+      if (/INPUT|SELECT|TEXTAREA/.test(tag)) return;
+      if (e.key === 'Escape' && !this.state.sheetOpen && !this.state.panelHidden) { this.setPanel(true); return; }
+      if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp') return;
+      const list = this._list || []; if (!list.length) return;
+      e.preventDefault();
+      const i = Math.max(0, list.findIndex(j => j.id === this._selId));
+      const n = e.key === 'ArrowDown' ? Math.min(list.length - 1, i + 1) : Math.max(0, i - 1);
+      this.setState({ selectedId: list[n].id });
+    };
+    window.addEventListener('resize', this._onResize);
+    window.addEventListener('keydown', this._onKey);
+    this.applyTheme();
+  }
+  componentDidUpdate() { this.applyTheme(); }
+  componentWillUnmount() { window.removeEventListener('resize', this._onResize); window.removeEventListener('keydown', this._onKey); clearTimeout(this._tt); }
+  static ACCENTS = {
+    '#2f5bea': ['#2f5bea', '#7f9bff', '#2448c9', '#1a3699'],
+    '#0f8a5f': ['#0f8a5f', '#4fc493', '#0b7550', '#075c3e'],
+    '#6b4ce6': ['#6b4ce6', '#a48cff', '#5838c9', '#432a9c'],
+    '#0e7c86': ['#0e7c86', '#4fc0c8', '#0b6970', '#08535a']
+  };
+  applyTheme() {
+    const el = document.documentElement;
+    el.setAttribute('data-theme', this.state.theme); el.lang = this.state.lang;
+    const a = Component.ACCENTS[(this.props.accent || '#2f5bea').toLowerCase()] || Component.ACCENTS['#2f5bea'];
+    [['--color-accent', a[0]], ['--color-accent-400', a[1]], ['--color-accent-500', a[0]], ['--color-accent-600', a[2]], ['--color-accent-700', a[3]]].forEach(([k, v]) => el.style.setProperty(k, v));
+  }
+  persist(k, v) { try { window.localStorage.setItem('meridio.' + k, typeof v === 'string' ? v : JSON.stringify(v)); } catch (e) {} }
+  setPanel(hidden) { this.persist('panel', hidden ? 'hidden' : 'shown'); this.setState({ panelHidden: hidden }); }
+  isMobile() { return !!this.props.previewMobile || this.state.w < 860; }
+  showToast(msg) { clearTimeout(this._tt); this.setState({ toast: msg }); this._tt = setTimeout(() => this.setState({ toast: '' }), 1800); }
+  toggleArr(key, v) { this.setState(s => ({ [key]: s[key].includes(v) ? s[key].filter(x => x !== v) : [...s[key], v] })); }
+  toggleSave(id) {
+    const t = Component.T[this.state.lang];
+    const on = this.state.saved.includes(id);
+    const saved = on ? this.state.saved.filter(x => x !== id) : [...this.state.saved, id];
+    this.persist('saved', saved); this.setState({ saved }); this.showToast(on ? t.removedToast : t.savedToast);
+  }
+  rel(h, t) { if (h < 1) return t.now; return t.ago(h < 24 ? h + ' h' : Math.round(h / 24) + ' d'); }
+  domain(u) { try { return new URL(u).hostname.replace(/^www\./, ''); } catch (e) { return u; } }
+
+  renderVals() {
+    const C = Component, s = this.state, t = C.T[s.lang] || C.T.es, mob = this.isMobile();
+    const cname = code => (C.COUNTRIES.find(c => c[0] === code) || [code, code])[1];
+    const elig = j => j.c.includes('LATAM') ? t.latam : j.c.map(cname).join(', ');
+    const maxH = { any: Infinity, d1: 24, d7: 168, d30: 720 }[s.posted];
+    const q = s.q.trim().toLowerCase();
+    const filtered = C.JOBS.filter(j =>
+      (!q || [j.title, j.company, ...j.stack].join(' ').toLowerCase().includes(q)) &&
+      (!s.roles.length || s.roles.includes(j.role)) &&
+      (!s.sens.length || s.sens.includes(j.sen)) &&
+      (s.country === 'all' || j.c.includes('LATAM') || j.c.includes(s.country)) &&
+      j.h <= maxH).sort((a, b) => a.h - b.h);
+    const savedJobs = C.JOBS.filter(j => s.saved.includes(j.id));
+    const list = s.view === 'saved' ? savedJobs : filtered;
+    let sel = C.JOBS.find(j => j.id === s.selectedId);
+    if (!mob && (!sel || !list.includes(sel))) sel = list[0];
+    this._list = list; this._selId = sel && sel.id;
+
+    const nFilters = s.roles.length + s.sens.length + (s.country !== 'all' ? 1 : 0) + (s.posted !== 'any' ? 1 : 0) + (q ? 1 : 0);
+    const clearFilters = () => this.setState({ q: '', roles: [], sens: [], country: 'all', posted: 'any' });
+    const chip = (on, label, onClick) => ({ label, onClick, pressed: on ? 'true' : 'false', bg: on ? 'var(--color-accent)' : 'var(--color-surface)', fg: on ? 'var(--on-accent)' : 'var(--color-text)', border: on ? 'var(--color-accent)' : 'var(--color-divider)' });
+    const isSaved = id => s.saved.includes(id);
+    const compact = this.props.density === 'compact';
+
+    const jobs = list.map(j => {
+      const on = sel && sel.id === j.id && !mob && !s.panelHidden, sv = isSaved(j.id);
+      return {
+        title: j.title, initials: j.ini, sub: j.company + ' · ' + elig(j) + ' · ' + t[j.ct], senLabel: t.sen[j.sen], tags: j.stack.slice(0, compact ? 2 : 3),
+        postedLabel: this.rel(j.h, t), isNew: j.h < 24, salary: j.pay, hasSalary: !!j.pay, url: j.url,
+        bg: on ? 'var(--sel)' : 'var(--color-surface)', cardBorder: on ? 'color-mix(in srgb,var(--color-accent) 45%,transparent)' : 'transparent', titleColor: on ? 'var(--accent-ink)' : 'var(--color-text)', current: on ? 'true' : 'false',
+        savedStr: sv ? 'true' : 'false', saveFill: sv ? 'currentColor' : 'none', saveColor: sv ? 'var(--color-accent)' : 'var(--color-text)', saveLabel: sv ? t.unsaveJob : t.saveJob,
+        applyAria: t.applyOn(this.domain(j.url)) + ' — ' + j.title,
+        onSelect: (e) => { e && e.stopPropagation(); if (!mob && s.panelHidden) this.persist('panel', 'shown'); this.setState({ selectedId: j.id, detailOpen: true, panelHidden: false }); },
+        onSave: (e) => { e.stopPropagation(); this.toggleSave(j.id); },
+        onApply: (e) => e.stopPropagation()
+      };
+    });
+
+    let d = { title: '', meta: [], reqs: [], stack: [] };
+    if (sel) {
+      const sv = isSaved(sel.id);
+      d = {
+        title: sel.title, company: sel.company, initials: sel.ini, url: sel.url, about: sel.about, reqs: sel.reqs, stack: sel.stack,
+        postedLabel: this.rel(sel.h, t), applyLabel: mob ? t.apply : t.applyOn(this.domain(sel.url)), opensOn: t.opensOn,
+        savedStr: sv ? 'true' : 'false', saveFill: sv ? 'currentColor' : 'none', saveColor: sv ? 'var(--color-accent)' : 'var(--color-text)', saveText: sv ? t.savedBtn : t.save,
+        onSave: () => this.toggleSave(sel.id),
+        meta: [{ label: t.seniority, value: t.sen[sel.sen] }, { label: t.contract, value: t[sel.ct] }, { label: t.eligible, value: elig(sel) }, { label: t.salary, value: sel.pay || t.salaryNA }]
+      };
+    }
+
+    const isSavedView = s.view === 'saved';
+    const showDetail = mob ? (s.detailOpen && !!sel) : !s.panelHidden;
+    const showList = !mob || !showDetail;
+    const pm = !!this.props.previewMobile;
+    const summaryBits = [...s.roles.map(r => (C.ROLES.find(x => x[0] === r) || [])[1]), ...s.sens.map(x => t.sen[x]), s.country !== 'all' ? cname(s.country) : null, q ? '\u201c' + s.q.trim() + '\u201d' : null].filter(Boolean);
+    const emailInvalid = !/^\S+@\S+\.\S+$/.test(s.email);
+
+    return {
+      t, isMobile: mob, isDesktop: !mob, isDark: s.theme === 'dark', isLight: s.theme !== 'dark',
+      themeLabel: s.theme === 'dark' ? t.light : t.dark,
+      toggleTheme: () => { const th = s.theme === 'dark' ? 'light' : 'dark'; this.persist('theme', th); this.setState({ theme: th }); },
+      langs: ['es', 'pt', 'en'].map(l => ({ label: l.toUpperCase(), pressed: s.lang === l ? 'true' : 'false', bg: s.lang === l ? 'color-mix(in srgb,var(--color-accent) 14%,transparent)' : 'transparent', fg: s.lang === l ? 'var(--accent-ink)' : 'var(--color-text)', onClick: () => { this.persist('lang', l); this.setState({ lang: l }); } })),
+      goJobs: (e) => { e.preventDefault(); this.setState({ view: 'jobs', detailOpen: false }); },
+      tabs: [['jobs', t.jobs, 0], ['saved', t.saved, s.saved.length]].map(([v, label, count]) => ({ label, count, hasCount: count > 0, current: s.view === v ? 'page' : 'false', line: 'transparent', pill: s.view === v ? 'color-mix(in srgb,var(--color-accent) 12%,transparent)' : 'transparent', color: s.view === v ? 'var(--accent-ink)' : 'var(--color-text)', weight: s.view === v ? 800 : 400, onClick: () => this.setState({ view: v, detailOpen: false, selectedId: null }) })),
+      outerBg: pm ? 'var(--color-surface)' : 'var(--color-bg)', outerPad: pm ? '24px' : '0', frameW: pm ? '390px' : '100%', frameH: pm ? '844px' : '100vh', frameBorder: pm ? '1px solid var(--color-divider)' : '0',
+      headPad: mob ? '10px 16px' : '12px 20px', cols: (mob || s.panelHidden) ? 'minmax(0,1fr)' : 'minmax(340px,440px) minmax(0,1fr)',
+      listGridCols: (!mob && s.panelHidden) ? 'repeat(auto-fill,minmax(360px,1fr))' : 'minmax(0,1fr)',
+      showPanelToggle: !mob && list.length > 0, panelLabel: s.panelHidden ? t.showDetails : t.hideDetails, panelPressed: s.panelHidden ? 'false' : 'true', panelBtnBg: s.panelHidden ? 'var(--color-surface)' : 'transparent',
+      togglePanel: () => this.setPanel(!s.panelHidden), hidePanel: () => this.setPanel(true), listBorder: '0',
+      cardPad: compact ? '12px 20px' : (mob ? '16px' : '18px'), detailPad: mob ? '20px 16px 28px' : '28px 36px 40px', h1Size: mob ? '26px' : '34px',
+      showToolbar: !mob && !isSavedView, showMobileSearch: mob && !isSavedView, showTabbar: mob && !showDetail,
+      q: s.q, onQ: e => this.setState({ q: e.target.value }),
+      country: s.country, onCountry: e => this.setState({ country: e.target.value }),
+      posted: s.posted, onPosted: e => this.setState({ posted: e.target.value }),
+      countryOpts: [{ value: 'all', label: t.anyCountry }, ...C.COUNTRIES.map(([v, l]) => ({ value: v, label: l }))],
+      postedOpts: [['any', t.anyTime], ['d1', t.d1], ['d7', t.d7], ['d30', t.d30]].map(([value, label]) => ({ value, label })),
+      roleChips: C.ROLES.map(([k, l]) => chip(s.roles.includes(k), l, () => this.toggleArr('roles', k))),
+      senChips: C.SEN.map(k => chip(s.sens.includes(k), t.sen[k], () => this.toggleArr('sens', k))),
+      hasFilters: nFilters > 0, clearFilters,
+      filterBtnLabel: nFilters ? t.filters + ' · ' + nFilters : t.filters, filterBtnBg: nFilters ? 'var(--color-accent)' : 'var(--color-surface)', filterBtnFg: nFilters ? 'var(--on-accent)' : 'var(--color-text)',
+      openSheet: () => this.setState({ sheetOpen: true }), closeSheet: () => this.setState({ sheetOpen: false }), sheetOpen: s.sheetOpen, showNLabel: t.showN(filtered.length),
+      stop: e => e.stopPropagation(),
+      listTitle: isSavedView ? t.savedTitle(savedJobs.length) : t.count(filtered.length), listSub: isSavedView ? t.savedSub : t.newest,
+      jobs, quickApply: this.props.quickApply ?? true, isEmpty: list.length === 0, showKeyHint: !mob && list.length > 1,
+      emptyTitle: isSavedView ? t.savedEmpty : t.noResults, emptyHint: isSavedView ? t.savedEmptyHint : t.noResultsHint,
+      emptyActionLabel: isSavedView ? t.browse : t.clear, emptyAction: isSavedView ? () => this.setState({ view: 'jobs' }) : clearFilters,
+      showDetail, showList, hasDetail: !!sel, noDetail: !sel && !mob, d,
+      closeDetail: () => this.setState({ detailOpen: false }),
+      copyLink: () => { try { navigator.clipboard.writeText(sel.url); } catch (e) {} this.showToast(t.copied); },
+      alertOpen: s.alertOpen, alertPending: !s.alertSent, alertSent: s.alertSent,
+      openAlert: () => this.setState({ alertOpen: true, alertSent: false, sheetOpen: false }), closeAlert: () => this.setState({ alertOpen: false }),
+      alertSummary: summaryBits.length ? summaryBits.join(' · ') : t.allJobs,
+      email: s.email, onEmail: e => this.setState({ email: e.target.value }), emailInvalid, submitOpacity: emailInvalid ? 0.45 : 1,
+      submitAlert: () => { if (!emailInvalid) this.setState({ alertSent: true }); },
+      hasToast: !!s.toast, toast: s.toast, toastBottom: mob ? (showDetail ? '84px' : '72px') : '20px'
+    };
+  }
+}
+</script>
+</body>
+</html>

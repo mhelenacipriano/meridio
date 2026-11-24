@@ -1,0 +1,38 @@
+[
+  { "name": "GoFasti", "ats": "greenhouse", "slug": "gofasti" },
+  { "name": "Nortal", "ats": "greenhouse", "slug": "nortal" },
+  { "name": "Wizeline", "ats": "greenhouse", "slug": "wizeline" },
+  { "name": "Arionkoder", "ats": "greenhouse", "slug": "arionkoder" },
+
+  { "name": "CI&T", "ats": "lever", "slug": "ciandt" },
+  { "name": "Coderio", "ats": "lever", "slug": "coderio" },
+  { "name": "Talentus Global", "ats": "lever", "slug": "TalentusGlobal" },
+
+  { "name": "Truelogic", "ats": "ashby", "slug": "truelogic" },
+  { "name": "Pragmatike", "ats": "ashby", "slug": "pragmatike" },
+  { "name": "LatamCent", "ats": "ashby", "slug": "latamcent" },
+
+  { "name": "BEON.tech", "ats": "workable", "slug": "beon" },
+  { "name": "Workstate", "ats": "workable", "slug": "workstate" },
+  { "name": "Azumo", "ats": "workable", "slug": "azumo" },
+  { "name": "Remotebase", "ats": "workable", "slug": "remotebase" },
+  { "name": "BairesDev", "ats": "workable", "slug": "bairesdev" },
+  { "name": "Jobsity", "ats": "workable", "slug": "jobsity" },
+  { "name": "Encora", "ats": "workable", "slug": "encora" },
+  { "name": "Globant", "ats": "workable", "slug": "globant" },
+  { "name": "Softtek", "ats": "workable", "slug": "softtek" },
+  { "name": "Vinta Software", "ats": "workable", "slug": "vinta" },
+
+  { "name": "Howdy", "ats": "breezy", "slug": "howdy" },
+
+  { "name": "Wizdaa", "ats": "recruitee", "slug": "wizdaa" },
+
+  { "name": "Cheesecake Labs", "ats": "trakstar", "slug": "cheesecakelabs" },
+
+  {
+    "name": "X-Team",
+    "ats": "custom",
+    "slug": "jobs.x-team.com",
+    "skip": "jobs.x-team.com renders no listings in its HTML; they load through a private Bullhorn proxy that needs an API key embedded in the site's JS bundle. That key is the site's own credential, so it is not used."
+  }
+]

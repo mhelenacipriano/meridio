@@ -1,0 +1,476 @@
+{
+  "ranAt": "2026-11-24T16:38:26.495Z",
+  "includeOnsite": false,
+  "companies": [
+    {
+      "company": "GoFasti",
+      "ats": "greenhouse",
+      "slug": "gofasti",
+      "status": "ok",
+      "openings": 15,
+      "tech": 8,
+      "brazilEligible": 5,
+      "kept": 5,
+      "dropped": {
+        "nonTech": 7,
+        "notEligible": 3,
+        "notRemote": 0,
+        "noDate": 0,
+        "noDescription": 0
+      },
+      "sampleDrops": [
+        "Java Angular Developer — description pins the role to MX",
+        "QA Engineer — description pins the role to MX",
+        "Mid AI Engineer — remote, but no Brazil/LATAM/worldwide evidence"
+      ]
+    },
+    {
+      "company": "Nortal",
+      "ats": "greenhouse",
+      "slug": "nortal",
+      "status": "ok",
+      "openings": 26,
+      "tech": 16,
+      "brazilEligible": 16,
+      "kept": 16,
+      "dropped": {
+        "nonTech": 10,
+        "notEligible": 0,
+        "notRemote": 0,
+        "noDate": 0,
+        "noDescription": 0
+      },
+      "sampleDrops": []
+    },
+    {
+      "company": "Wizeline",
+      "ats": "greenhouse",
+      "slug": "wizeline",
+      "status": "ok",
+      "openings": 32,
+      "tech": 24,
+      "brazilEligible": 0,
+      "kept": 0,
+      "dropped": {
+        "nonTech": 8,
+        "notEligible": 24,
+        "notRemote": 0,
+        "noDate": 0,
+        "noDescription": 0
+      },
+      "sampleDrops": [
+        "Data Scientist — Colombia only",
+        "Data Scientist — Mexico only",
+        "Data Scientist - ML Engineering — Ciudad de Mexico only",
+        "Full-Stack Engineer (.NET / React) — outside LATAM (Barcelona, Spain)"
+      ]
+    },
+    {
+      "company": "Arionkoder",
+      "ats": "greenhouse",
+      "slug": "arionkoder",
+      "status": "ok",
+      "openings": 16,
+      "tech": 13,
+      "brazilEligible": 13,
+      "kept": 12,
+      "dropped": {
+        "nonTech": 3,
+        "notEligible": 0,
+        "notRemote": 1,
+        "noDate": 0,
+        "noDescription": 0
+      },
+      "sampleDrops": []
+    },
+    {
+      "company": "CI&T",
+      "ats": "lever",
+      "slug": "ciandt",
+      "status": "ok",
+      "openings": 119,
+      "tech": 92,
+      "brazilEligible": 81,
+      "kept": 76,
+      "dropped": {
+        "nonTech": 27,
+        "notEligible": 11,
+        "notRemote": 5,
+        "noDate": 0,
+        "noDescription": 0
+      },
+      "sampleDrops": [
+        "Master Data Developer (Amazon Neptune), Colombia — Colombia | Colombia only",
+        "Data Architect (Boomi), Colombia — Colombia | Colombia only",
+        "Senior DevSecOps Engineer, Colombia — description pins the role to CO",
+        "Senior Back End Developer (Python/Golang & SAP), Colombia — Colombia | Colombia only"
+      ]
+    },
+    {
+      "company": "Coderio",
+      "ats": "lever",
+      "slug": "coderio",
+      "status": "ok",
+      "openings": 42,
+      "tech": 34,
+      "brazilEligible": 11,
+      "kept": 7,
+      "dropped": {
+        "nonTech": 8,
+        "notEligible": 23,
+        "notRemote": 0,
+        "noDate": 0,
+        "noDescription": 4
+      },
+      "sampleDrops": [
+        "Desarollador Java Senior — Ciudad Autónoma de Buenos Aires | Ciudad only",
+        "Desarrollador .NET Senior — Buenos Aires | Buenos Aires | Argentina only",
+        "Desarrollador de APIs e Integraciones - Híbrido — Ciudad Autónoma de Buenos Aires | Ciudad only",
+        "Desarrollador Fullstack (Java/Angular) — Buenos Aires | Buenos Aires | Argentina only"
+      ]
+    },
+    {
+      "company": "Talentus Global",
+      "ats": "lever",
+      "slug": "TalentusGlobal",
+      "status": "ok",
+      "openings": 12,
+      "tech": 4,
+      "brazilEligible": 3,
+      "kept": 3,
+      "dropped": {
+        "nonTech": 8,
+        "notEligible": 1,
+        "notRemote": 0,
+        "noDate": 0,
+        "noDescription": 0
+      },
+      "sampleDrops": [
+        "Fractional Chief AI Officer (CAIO) - Higher Education & EdTech — outside LATAM (United States | United States)"
+      ]
+    },
+    {
+      "company": "Truelogic",
+      "ats": "ashby",
+      "slug": "truelogic",
+      "status": "ok",
+      "openings": 61,
+      "tech": 50,
+      "brazilEligible": 50,
+      "kept": 49,
+      "dropped": {
+        "nonTech": 11,
+        "notEligible": 0,
+        "notRemote": 1,
+        "noDate": 0,
+        "noDescription": 0
+      },
+      "sampleDrops": []
+    },
+    {
+      "company": "Pragmatike",
+      "ats": "ashby",
+      "slug": "pragmatike",
+      "status": "ok",
+      "openings": 52,
+      "tech": 32,
+      "brazilEligible": 3,
+      "kept": 3,
+      "dropped": {
+        "nonTech": 20,
+        "notEligible": 29,
+        "notRemote": 0,
+        "noDate": 0,
+        "noDescription": 0
+      },
+      "sampleDrops": [
+        "Storage & Backup Engineer (Remote) — outside LATAM (Armenia | Czech Republic | Spain  | Hungary | Albania | Serb)",
+        "ML Ops Engineer (EMEA Remote) — outside LATAM (Ukraine | Czech Republic | Latvia | Spain  | Albania | Lithu)",
+        "AI Infrastructure Engineer (GPU) - Remote EMEA — outside LATAM (Ukraine | Czech Republic | Bulgaria | Latvia | Spain  | Hung)",
+        "Senior Site Reliability Engineer (Remote) — outside LATAM (Armenia | Latvia | Spain  | Albania | Bosnia & Herzegovina |)"
+      ]
+    },
+    {
+      "company": "LatamCent",
+      "ats": "ashby",
+      "slug": "latamcent",
+      "status": "ok",
+      "openings": 16,
+      "tech": 6,
+      "brazilEligible": 4,
+      "kept": 1,
+      "dropped": {
+        "nonTech": 10,
+        "notEligible": 2,
+        "notRemote": 3,
+        "noDate": 0,
+        "noDescription": 0
+      },
+      "sampleDrops": [
+        "Senior Site Reliability Engineer — Argentina | Argentina only",
+        "Senior Full-Stack Engineer (AI-Focused) — Argentina | Argentina only"
+      ]
+    },
+    {
+      "company": "BEON.tech",
+      "ats": "workable",
+      "slug": "beon",
+      "status": "ok",
+      "openings": 6,
+      "tech": 2,
+      "brazilEligible": 1,
+      "kept": 1,
+      "dropped": {
+        "nonTech": 4,
+        "notEligible": 1,
+        "notRemote": 0,
+        "noDate": 0,
+        "noDescription": 0
+      },
+      "sampleDrops": [
+        "Integrations Engineer — Guadalajara, Jalisco, Mexico | Guadalaja only"
+      ]
+    },
+    {
+      "company": "Workstate",
+      "ats": "workable",
+      "slug": "workstate",
+      "status": "ok",
+      "openings": 3,
+      "tech": 3,
+      "brazilEligible": 3,
+      "kept": 3,
+      "dropped": {
+        "nonTech": 0,
+        "notEligible": 0,
+        "notRemote": 0,
+        "noDate": 0,
+        "noDescription": 0
+      },
+      "sampleDrops": []
+    },
+    {
+      "company": "Azumo",
+      "ats": "workable",
+      "slug": "azumo",
+      "status": "ok",
+      "openings": 9,
+      "tech": 7,
+      "brazilEligible": 7,
+      "kept": 7,
+      "dropped": {
+        "nonTech": 2,
+        "notEligible": 0,
+        "notRemote": 0,
+        "noDate": 0,
+        "noDescription": 0
+      },
+      "sampleDrops": []
+    },
+    {
+      "company": "Remotebase",
+      "ats": "workable",
+      "slug": "remotebase",
+      "status": "ok",
+      "openings": 6,
+      "tech": 4,
+      "brazilEligible": 3,
+      "kept": 3,
+      "dropped": {
+        "nonTech": 2,
+        "notEligible": 1,
+        "notRemote": 0,
+        "noDate": 0,
+        "noDescription": 0
+      },
+      "sampleDrops": [
+        "Rust Engineer (Part Time) — outside LATAM (Pakistan | Pakistan)"
+      ]
+    },
+    {
+      "company": "BairesDev",
+      "ats": "workable",
+      "slug": "bairesdev",
+      "status": "ok",
+      "openings": 0,
+      "tech": 0,
+      "brazilEligible": 0,
+      "kept": 0,
+      "dropped": {
+        "nonTech": 0,
+        "notEligible": 0,
+        "notRemote": 0,
+        "noDate": 0,
+        "noDescription": 0
+      },
+      "sampleDrops": []
+    },
+    {
+      "company": "Jobsity",
+      "ats": "workable",
+      "slug": "jobsity",
+      "status": "ok",
+      "openings": 0,
+      "tech": 0,
+      "brazilEligible": 0,
+      "kept": 0,
+      "dropped": {
+        "nonTech": 0,
+        "notEligible": 0,
+        "notRemote": 0,
+        "noDate": 0,
+        "noDescription": 0
+      },
+      "sampleDrops": []
+    },
+    {
+      "company": "Encora",
+      "ats": "workable",
+      "slug": "encora",
+      "status": "ok",
+      "openings": 0,
+      "tech": 0,
+      "brazilEligible": 0,
+      "kept": 0,
+      "dropped": {
+        "nonTech": 0,
+        "notEligible": 0,
+        "notRemote": 0,
+        "noDate": 0,
+        "noDescription": 0
+      },
+      "sampleDrops": []
+    },
+    {
+      "company": "Globant",
+      "ats": "workable",
+      "slug": "globant",
+      "status": "ok",
+      "openings": 0,
+      "tech": 0,
+      "brazilEligible": 0,
+      "kept": 0,
+      "dropped": {
+        "nonTech": 0,
+        "notEligible": 0,
+        "notRemote": 0,
+        "noDate": 0,
+        "noDescription": 0
+      },
+      "sampleDrops": []
+    },
+    {
+      "company": "Softtek",
+      "ats": "workable",
+      "slug": "softtek",
+      "status": "ok",
+      "openings": 0,
+      "tech": 0,
+      "brazilEligible": 0,
+      "kept": 0,
+      "dropped": {
+        "nonTech": 0,
+        "notEligible": 0,
+        "notRemote": 0,
+        "noDate": 0,
+        "noDescription": 0
+      },
+      "sampleDrops": []
+    },
+    {
+      "company": "Vinta Software",
+      "ats": "workable",
+      "slug": "vinta",
+      "status": "ok",
+      "openings": 0,
+      "tech": 0,
+      "brazilEligible": 0,
+      "kept": 0,
+      "dropped": {
+        "nonTech": 0,
+        "notEligible": 0,
+        "notRemote": 0,
+        "noDate": 0,
+        "noDescription": 0
+      },
+      "sampleDrops": []
+    },
+    {
+      "company": "Howdy",
+      "ats": "breezy",
+      "slug": "howdy",
+      "status": "ok",
+      "openings": 0,
+      "tech": 0,
+      "brazilEligible": 0,
+      "kept": 0,
+      "dropped": {
+        "nonTech": 0,
+        "notEligible": 0,
+        "notRemote": 0,
+        "noDate": 0,
+        "noDescription": 0
+      },
+      "sampleDrops": []
+    },
+    {
+      "company": "Wizdaa",
+      "ats": "recruitee",
+      "slug": "wizdaa",
+      "status": "ok",
+      "openings": 4,
+      "tech": 4,
+      "brazilEligible": 2,
+      "kept": 2,
+      "dropped": {
+        "nonTech": 0,
+        "notEligible": 2,
+        "notRemote": 0,
+        "noDate": 0,
+        "noDescription": 0
+      },
+      "sampleDrops": [
+        "Senior Backend Architect PK — outside LATAM (Remote job | Remote, Pakistan)",
+        "Senior React Native & React Engineer PK — outside LATAM (Remote job | REMOTE, Pakistan | Remote, Pakistan | Remote, P)"
+      ]
+    },
+    {
+      "company": "Cheesecake Labs",
+      "ats": "trakstar",
+      "slug": "cheesecakelabs",
+      "status": "ok",
+      "openings": 5,
+      "tech": 2,
+      "brazilEligible": 2,
+      "kept": 2,
+      "dropped": {
+        "nonTech": 3,
+        "notEligible": 0,
+        "notRemote": 0,
+        "noDate": 0,
+        "noDescription": 0
+      },
+      "sampleDrops": []
+    },
+    {
+      "company": "X-Team",
+      "ats": "custom",
+      "slug": "jobs.x-team.com",
+      "status": "skipped",
+      "openings": 0,
+      "tech": 0,
+      "brazilEligible": 0,
+      "kept": 0,
+      "dropped": {
+        "nonTech": 0,
+        "notEligible": 0,
+        "notRemote": 0,
+        "noDate": 0,
+        "noDescription": 0
+      },
+      "sampleDrops": [],
+      "error": "jobs.x-team.com renders no listings in its HTML; they load through a private Bullhorn proxy that needs an API key embedded in the site's JS bundle. That key is the site's own credential, so it is not used."
+    }
+  ],
+  "total": 190
+}
